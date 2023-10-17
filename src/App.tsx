@@ -4,7 +4,7 @@ import Home from "./routes/home"
 import Profile from "./routes/profile"
 import Login from "./routes/login"
 import CreateAccout from "./routes/createAccount"
-import { createGlobalStyle } from "styled-components"
+import styled, { createGlobalStyle } from "styled-components"
 import reset from "styled-reset"
 import { useEffect, useState } from "react"
 import LoadingScreen from "./components/loadingScreen"
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
 const GlobalStyles = createGlobalStyle`
   ${reset}; // 모든 스타일을 리셋해주는 설정
   * {
-    box-sizeing: border-box;
+    box-sizing: border-box;
   }
   body {
     background-color: black;
@@ -65,11 +65,18 @@ function App() {
   }, []);
 
   return (
-    <>
+    <Wrapper>
       <GlobalStyles />
       {isLoading ? <LoadingScreen/> : <RouterProvider router={router} />}
-    </>
+    </Wrapper>
   )
 }
 
 export default App
+
+
+const Wrapper = styled.div`
+  height:100vh;
+  display: flex;
+  justify-content: center;
+`;
