@@ -77,7 +77,7 @@ export default function CreateAccout() {
         <Input
           onChange={onChange}
           type="submit"
-          value={isLoading ? "Loading..." : "Create Account"}
+          value={isLoading ? "Loading..." : "Login"}
         />
       </Form>
       {error != "" ? <Error>{error}</Error> : null}
