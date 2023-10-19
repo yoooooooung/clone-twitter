@@ -38,7 +38,7 @@ export default function PostTweetForm() {
        * 새로운 documnet를 생성
        * addDoc(collection(Friestore 인스턴스(=db), 'collectoin이름'), {추가하고 싶은 데이터})
        */
-      const doc = await addDoc(collection(db, "tweet"), {
+      const doc = await addDoc(collection(db, "tweets"), {
         tweet, // tweet : tweet 이랑 같은 뜻인듯
         createdAt: Date.now(),
         username: user.displayName || "Anonymous",
