@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { auth, db } from "../firebase";
+import { addDoc, collection } from "firebase/firestore";
 
 export default function PostTweetForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,8 +21,37 @@ export default function PostTweetForm() {
     }
   };
 
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const user = auth.currentUser;
+    // 유저가 로그인했지 않거나
+    // 아직 로딩중이거나
+    // 트위터 내용이 아무것도 없거나
+    // 트위터 내용 길이가 180이상일 땐 함수실행 x 종료
+    if (!user || isLoading || tweet === "" || tweet.length > 180) return;
+
+    try {
+      setIsLoading(true);
+      /** Firebase에 데이터를 보내기
+       * Firebase SDK에 포함된 addDoc 함수
+       * 새로운 documnet를 생성
+       * addDoc(collection(Friestore 인스턴스(=db), 'collectoin이름'), {추가하고 싶은 데이터})
+       */
+      await addDoc(collection(db, "tweet"), {
+        tweet, // tweet : tweet 이랑 같은 뜻인듯
+        createdAt: Date.now(),
+        username: user.displayName || "Anonymous",
+        userId: user.uid,
+      });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <From>
+    <From onSubmit={onSubmit}>
       <TextArea
         rows={5}
         maxLength={180}
